@@ -1,0 +1,6 @@
+.countriesHome{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 65px 10px 10px 10px;
+}

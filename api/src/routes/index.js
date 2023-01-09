@@ -1,7 +1,6 @@
 const { Router } = require('express');
-const {setAllCountriesToDB, getAllCountries, getCountriesByName, getCountryById} = require('../controllers/countryController');
+const {setAllCountriesToDB, getAllCountries, getCountriesFiltered, getCountryById} = require('../controllers/countryController');
 const {addActivity, getAllActivities, getActivityById} = require('../controllers/activityController');
-const { Country, Activity } = require('../db.js');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -11,7 +10,7 @@ const router = Router();
 // Ejemplo: router.use('/auth', authRouter);
 var instancia = 0;
 router.get('/countries', async(req, res) => {
-    const {name} = req.query;
+    const {name, continent} = req.query;
 
     // Solo en primera instancia carga la base de datos
     try {
@@ -21,13 +20,13 @@ router.get('/countries', async(req, res) => {
         }  
         
         let countries = [];
-        if (name)
-            countries = await getCountriesByName(name);
+        if (name || continent)
+            countries = await getCountriesFiltered(name, continent);
         else
             countries = await getAllCountries();
 
         if (countries.length) return res.status(200).json(countries);
-        res.status(404).json({error: `Countries not found with name ${name}`}); 
+        res.status(404).json({error: `Countries not found`}); 
     }catch(e) {
         res.status(400).json({error: e.message});
     }
@@ -73,7 +72,6 @@ router.get('/activities/:id', async(req, res) => {
 
     //if (!Number.isInteger(id)) return res.status(400).json({e: `${id} is not an Integer`});
     if (isNaN(id)) return res.status(400).json({e: `${id} is not an Integer`});
-
 
     try {
         const activity = await getActivityById(id);

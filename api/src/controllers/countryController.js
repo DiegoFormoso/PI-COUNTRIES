@@ -8,7 +8,7 @@ const  setAllCountriesToDB = async() => {
         id: country.cca3,
         name: country.name.common !== null ? country.name.common : 'without Name',
         image: country.flags !== null ? country.flags[0] : 'without Flag',
-        region: country.region !== null ? country.region : 'without Region',
+        continent: country.continents !== null ? country.continents[0] : 'without Continent',
         subregion: country.subregion,
         capital: country.hasOwnProperty('capital') ? country.capital[0] : 'without Capital',
         area: country.area,
@@ -21,10 +21,11 @@ const getAllCountries = async() => {
     return await Country.findAll();
 }
 
-const getCountriesByName = async(name) => {
+const getCountriesFiltered = async(name, continent) => {
     const condition = {};
     const where = {};
-    where.name = {[Op.iLike] : `%${name}%`};
+    if (name) where.name = {[Op.iLike] : `%${name}%`};
+    if (continent) where.continent = {[Op.eq] : `${continent}`}
     condition.where = where; 
     return await Country.findAll(condition);
 }
@@ -33,4 +34,4 @@ const getCountryById = async(id) => {
     return await Country.findByPk(id.toUpperCase(), {include: Activity});
 }
 
-module.exports = { setAllCountriesToDB, getAllCountries, getCountriesByName, getCountryById };
+module.exports = { setAllCountriesToDB, getAllCountries, getCountriesFiltered, getCountryById };

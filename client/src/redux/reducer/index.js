@@ -1,8 +1,9 @@
-import { GET_ALL_COUNTRIES, GET_COUNTRY } from "../actions";
+import { GET_ALL_COUNTRIES, GET_COUNTRY, FILTER_COUNTRIES, ERROR_SERVER } from "../actions";
 
 const initialState = {
     countries: [],
     country: {},
+    error: {}
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -10,13 +11,29 @@ const rootReducer = (state = initialState, action) => {
         case GET_ALL_COUNTRIES : 
             return {
                 ...state,
-                countries: action.payload
+                countries: action.payload,
+                error: {}
             }
 
         case GET_COUNTRY :
             return {
                 ...state,
-                country: action.payload
+                country: action.payload,
+                error: {}
+            }
+
+        case FILTER_COUNTRIES :
+            return {
+                ...state,
+                countries: action.payload,
+                error: {}
+            }
+
+        case ERROR_SERVER :
+            return {
+                ...state,
+                countries: [],
+                error: action.payload
             }
 
         default :

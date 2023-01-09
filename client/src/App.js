@@ -1,11 +1,13 @@
-import './App.css';
+import './app.css';
 import { Route } from 'react-router-dom';
 import { Home } from './components/Home/Home';
+import { Nav } from './components/Nav/Nav';
 
 function App() {
   return (
     <div className="App">
       <h1>Henry Countries</h1>
+      <Route path="/"  component={Nav}/>      
       <Route exact path="/"  component={Home}/>      
     </div>
   );

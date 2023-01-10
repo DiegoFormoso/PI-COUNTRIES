@@ -1,5 +1,6 @@
 const { Router } = require('express');
-const {setAllCountriesToDB, getAllCountries, getCountriesFiltered, getCountryById} = require('../controllers/countryController');
+const {setAllCountriesToDB, getAllCountries, getCountriesFiltered,
+     getCountryById, getAllContinents} = require('../controllers/countryController');
 const {addActivity, getAllActivities, getActivityById} = require('../controllers/activityController');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -8,9 +9,9 @@ const router = Router();
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
-var instancia = 0;
+var instancia = 1; /// acordate de cambiarlo
 router.get('/countries', async(req, res) => {
-    const {name, continent} = req.query;
+    const {name, continent, activity} = req.query;
 
     // Solo en primera instancia carga la base de datos
     try {
@@ -20,8 +21,8 @@ router.get('/countries', async(req, res) => {
         }  
         
         let countries = [];
-        if (name || continent)
-            countries = await getCountriesFiltered(name, continent);
+        if (name || continent || activity)
+            countries = await getCountriesFiltered(name, continent, activity);
         else
             countries = await getAllCountries();
 
@@ -43,11 +44,20 @@ router.get('/countries/:id', async(req, res) => {
     }    
 });
 
+router.get('/continents', async(req, res) => {
+    try{
+        const continents = await getAllContinents();
+        res.status(200).json(continents);
+    }catch(e){
+        res.status(400).json({error: e.message});
+    }
+})
+
 router.post('/activities', async(req, res) => {
     const {name, difficulty, duration, season, countries} = req.body;
-
+    
     if (!name || !difficulty || !duration || !season || !countries)
-        return res.status(404).json({error: 'Missing obligatory data'});
+        return res.status(400).json({error: 'Missing obligatory data'});
 
     try{
         const activity = await addActivity(req.body);

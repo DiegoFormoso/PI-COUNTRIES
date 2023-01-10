@@ -1,0 +1,61 @@
+.container{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.form {
+    position: relative;
+    width: 40%;
+    padding: 20px;
+    margin: 10px;
+    background-color: rgba(130, 143, 163, 0.377);
+    border-style:solid;
+    border-width: 1px;
+    border-color: rgb(43, 10, 97);   
+    box-shadow: rgb(239, 245, 252) 0px 20px 30px -10px; 
+}
+
+.form-container {
+    justify-content: left;
+}
+
+.container-fields input {
+    width: 100%;
+}
+
+.container-fields select {
+    width: 100%;
+}
+
+.success-box {
+    position: absolute;
+    color: green;
+    left:0px;
+    top:0px;
+    background-color: rgba(130, 143, 163, 0.377);
+    width: 100%;
+    height: 100%;
+}
+
+.success {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left:0px;
+    top:0px;
+    color: green;
+    font-size: 25px;
+    font-weight: bold;
+    background-color: white;
+}
+
+.success p {
+   margin-top: 15%;
+}
+
+.error {
+    color: red;
+    font-size: 13px;
+}
+

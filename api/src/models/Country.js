@@ -28,7 +28,10 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     area: {
-      type: DataTypes.FLOAT
+      type: DataTypes.FLOAT,
+      get() {
+        return this.getDataValue('area') + ' km2';
+      }
     },
     population: {
       type: DataTypes.BIGINT

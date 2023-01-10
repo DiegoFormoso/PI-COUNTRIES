@@ -3,7 +3,6 @@ const { Op } = require('sequelize');
 
 
 const addActivity = async(data) => {
-  data.season = data.season.toLowerCase();
   const {name, duration, difficulty, season, countries} = data;
 
   // Valido campo dificultad, que tenga el valor permitido
@@ -34,8 +33,8 @@ const addActivity = async(data) => {
 
   let countriesForActivity = [];
   for (let i=0; i < countries.length; i++) {
-    c = await Country.findByPk(countries[i]);
-    if (c) countriesForActivity.push(countries[i]);
+    c = await Country.findByPk(countries[i].id);
+    if (c) countriesForActivity.push(countries[i].id);
   };  
 
   await activity.addCountries(countriesForActivity);

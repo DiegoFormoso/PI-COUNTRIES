@@ -20,6 +20,7 @@ export const Home = () => {
                 return (
                     <CountryCard
                         key={country.id}
+                        id={country.id}
                         image={country.image}
                         name={country.name}
                         continent={country.continent} 

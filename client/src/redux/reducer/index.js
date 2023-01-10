@@ -1,8 +1,12 @@
-import { GET_ALL_COUNTRIES, GET_COUNTRY, FILTER_COUNTRIES, ERROR_SERVER } from "../actions";
+import { GET_ALL_COUNTRIES, FILTER_COUNTRIES, ERROR_SERVER, GET_COUNTRY_DETAIL, 
+    CREATE_ACTIVITY, GET_ALL_ACTIVITIES, CLEAR_STATES, GET_ALL_CONTINENTS,
+    ERROR_FILTER } from "../actions";
 
 const initialState = {
     countries: [],
     country: {},
+    activities: [],
+    continents: [],
     error: {}
 };
 
@@ -15,7 +19,7 @@ const rootReducer = (state = initialState, action) => {
                 error: {}
             }
 
-        case GET_COUNTRY :
+        case GET_COUNTRY_DETAIL :
             return {
                 ...state,
                 country: action.payload,
@@ -29,11 +33,46 @@ const rootReducer = (state = initialState, action) => {
                 error: {}
             }
 
+        case GET_ALL_CONTINENTS :
+            return {
+                ...state,
+                continents: action.payload,
+                erros: {}
+            }
+
+        case CREATE_ACTIVITY : 
+            return {
+                ...state,
+                activities: [...state.activities, action.payload],
+                error: {}
+            }
+
+        case GET_ALL_ACTIVITIES :
+            return {
+                ...state,
+                activities: action.payload,
+                error: []
+            }
+
+        case CLEAR_STATES :
+            return {
+                ...state,
+                activities : [],
+                countries: [],
+                counntry: {}
+            }   
+
         case ERROR_SERVER :
             return {
                 ...state,
-                countries: [],
                 error: action.payload
+            }
+
+        case ERROR_FILTER :
+            return {
+                ...state,
+                error: action.payload,
+                countries: []
             }
 
         default :

@@ -5,6 +5,10 @@ const { Op } = require('sequelize');
 const addActivity = async(data) => {
   const {name, duration, difficulty, season, countries} = data;
 
+  const activityVal = await Activity.findOne({where: {name: name}});
+  if (activityVal) 
+     throw new Error(`Name ${name} already exists`);
+
   // Valido campo dificultad, que tenga el valor permitido
   if (difficulty < 1 || difficulty > 5) 
      throw new Error('Difficulty must have a value between 1 and 5');

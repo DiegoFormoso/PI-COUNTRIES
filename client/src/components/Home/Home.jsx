@@ -1,7 +1,7 @@
 import "./home.css";
 import { React, useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {getCountries, countriesOrderByName, countriesOrderByPopulation, clearStates} from "../../redux/actions";
+import {getCountries, countriesOrderByName, countriesOrderByPopulation, clearStates, getAllContinents} from "../../redux/actions";
 import CountryCard from "../CountryCard/CountryCard";
 import { Paginated } from "../Paginated/Paginated";
 
@@ -39,7 +39,7 @@ export const Home = () => {
     }
   
     useEffect(()=>{
-        dispatch(getCountries())
+        dispatch(getCountries());
         return ()=>{
           dispatch(clearStates())
         }

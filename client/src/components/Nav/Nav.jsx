@@ -2,7 +2,7 @@ import "./nav.css";
 import { React, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { filterCountries, getAllActivities, clearStates, getAllContinents} from "../../redux/actions";
+import { filterCountries, getAllActivities, getAllContinents} from "../../redux/actions";
 
 export const Nav = () => {
   const continents = useSelector(state => state.continents);
@@ -15,16 +15,10 @@ export const Nav = () => {
 
   useEffect(()=>{
     dispatch(getAllActivities());
-    return () => {
-      dispatch(clearStates())
-    }
    },[dispatch]);
 
    useEffect(()=> {
-    dispatch(getAllContinents());
-    return () => {
-      dispatch(clearStates())
-    }
+     dispatch(getAllContinents());
    },[dispatch]);
 
   const handleFilterOnChange = e => {

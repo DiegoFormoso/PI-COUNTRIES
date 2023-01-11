@@ -3,7 +3,6 @@ import React, {useState, useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createActivity } from '../../redux/actions';
 import { useHistory } from 'react-router-dom';
-//import { SubmissionError } from 'redux-form';
 
 function validate(input) {
     let errors = {};
@@ -73,7 +72,7 @@ export const CreateActivity = () => {
 
     const handleCountryAdd = (e) => {
         e.preventDefault();
-        setErrors({});
+        setErrors({...errors, countries: ""});
 
         // busco el pais en el detalle de la actividad
         let countryFind = input.countries.length &&
@@ -100,30 +99,17 @@ export const CreateActivity = () => {
         })
     }
 
-    const handleOnSubmit = async(e) => {
+    const handleOnSubmit = (e) => {
         e.preventDefault();
-
-        //Video 48 de  curso react - validaciones
-        // setErrors(validate(input));
-        // console.log(validate(input));
-        // console.log(errors);
-
-        // if (Object.keys(errors).length === 0 ) {
-
         dispatch(createActivity(input));
-        if (serverError) {
-            alert('error');
-        }else{
-            alert(`${input.name} created successfully`);
-            console.log('paso 3');
-            setInput({
-                name: "",
-                difficulty: 1,
-                duration: "",
-                season: seasons[0],
-                countries: []
-            }); 
-        }
+        alert(`${input.name} created successfully`);
+        setInput({
+            name: "",
+            difficulty: 1,
+            duration: "",
+            season: seasons[0],
+            countries: []
+        })        
     }
 
     const handleOnClickReturnHome = (e) => {

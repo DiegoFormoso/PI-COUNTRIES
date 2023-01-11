@@ -67,7 +67,6 @@ export const createActivity = (activity) => {
        await axios.post('http://localhost:3001/activities', activity)
         .then(data => {dispatch({type: CREATE_ACTIVITY, payload: data.data})})
         .catch(e => {
-            console.log(e.response.data);
             dispatch({type: ERROR_SERVER, payload:e.response.data})
         })
     } 

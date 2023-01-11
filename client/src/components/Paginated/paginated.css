@@ -1,0 +1,35 @@
+.footer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    gap: 5px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    box-shadow: 0px 4px 8px #ccc;
+    background: white;
+    color: darkblue;
+    margin-top: 16px;
+    z-index: 10;
+    list-style: none; 
+}
+
+.paginationButton {
+    border: 1px solid white;
+    box-shadow: 0px 0px 3px #aaa;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: darkblue;
+    background: rgba(241, 241, 241, 0.856);
+    margin: 0px 4px;
+    padding: 4px 16px;
+    width: auto;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.paginationButton:hover {
+    box-shadow: 2px 4px 6px #bbb;
+    transform: scale(1.5);
+    background: darkgrey;
+}

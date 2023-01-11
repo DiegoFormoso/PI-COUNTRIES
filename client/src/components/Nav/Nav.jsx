@@ -2,7 +2,7 @@ import "./nav.css";
 import { React, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { filterCountries, getAllActivities, clearStates, getAllContinents } from "../../redux/actions";
+import { filterCountries, getAllActivities, clearStates, getAllContinents} from "../../redux/actions";
 
 export const Nav = () => {
   const continents = useSelector(state => state.continents);
@@ -81,7 +81,6 @@ export const Nav = () => {
                 )
             })}
           </select>
-
         </div>
 
         <Link to="/activities/create">Create tourist activity</Link>

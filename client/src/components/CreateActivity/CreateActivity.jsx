@@ -6,10 +6,27 @@ import { useHistory } from 'react-router-dom';
 
 function validate(input) {
     let errors = {};
-    if(!input.name || input.name.length < 3 || !input.name.match( (/^[A-Za-z]+$/))) 
-        errors.name =  'Enter a correct activity NAME';
-    else if (!input.duration) 
-        errors.duration = 'Enter a correct activity DURACTION';
+    const regexName = /^[A-Za-z0-9 ]{3,50}$/;
+
+    if (!input.name)
+        errors.name =  'NAME is required';
+    else if (!input.name.match(regexName)) 
+        errors.name =  'NAME is incorrect. It must have chararters,numbers and size between 3 and 50';
+
+    if (!input.difficulty)
+        errors.difficulty =  'DIFFICULTY is required';
+
+    if (!input.duration) 
+        errors.duration = 'DURACTION is required';
+    else if (!regexName.test(input.duration))
+        errors.duration = 'DURACTION is incorrect. It must have chararters,numbers and size between 3 and 50';
+
+    if (!input.season)
+        errors.season =  'SEASON is required';
+
+    if (!input.countries.length)   
+        errors.countries =  'You must have ay least one COUNTRY';
+
     return errors;
 }
 
@@ -55,11 +72,23 @@ export const CreateActivity = () => {
 
     const handleCountryAdd = (e) => {
         e.preventDefault();
-        const countryFind = countries.find(country => country.id === refCountrySelect.current.value);
-        setInput({
-            ...input,
-            countries: [...input.countries, {id: countryFind.id, name: countryFind.name}]
-        })
+        setErrors({...errors, countries: ""});
+
+        // busco el pais en el detalle de la actividad
+        let countryFind = input.countries.length &&
+            input.countries.find(country => country.id === refCountrySelect.current.value);
+        if (countryFind) {
+            setErrors({
+                ...errors,
+                countries: `Country ${countryFind.name} already exists`
+            })
+        } else { // si no lo encuentra busco los datos en el estado de paises        
+            countryFind = countries.find(country => country.id === refCountrySelect.current.value);
+            setInput({
+                    ...input,
+                    countries: [...input.countries, {id: countryFind.id, name: countryFind.name}]
+                });
+        };
     }
 
     const handleCountryDelete = (e) => {
@@ -154,7 +183,6 @@ export const CreateActivity = () => {
                             <select
                                 name="countrySelect"
                                 ref={refCountrySelect}>
-                                {console.log(countries)}
                                 {countries && countries.map(country => {
                                     return ( 
                                     <option value={country.id} key={country.id}>
@@ -169,8 +197,13 @@ export const CreateActivity = () => {
                             {input.countries.length > 0 && input.countries.map(country =>{
                                 return (
                                     <div key={country.id}>
-                                        <p>{country.name} 
-                                            <button id={country.id} onClick={handleCountryDelete}>Delete</button>
+                                        <p>
+                                            {country.name} 
+                                            <button 
+                                                id={country.id} 
+                                                onClick={handleCountryDelete}>
+                                                Delete
+                                            </button>
                                         </p> 
                                     </div>
                                 )

@@ -8,7 +8,7 @@ import { CreateActivity } from './components/CreateActivity/CreateActivity';
 function App() {
   return (
     <div className="App">
-      <h1>Henry Countries</h1>
+      <h2>Henry Countries</h2>
       <Route path="/"  component={Nav}/>      
       <Route exact path="/"  component={Home}/>      
       <Route exact path="/countries/:id"  component={CountryCardDetail}/>  

@@ -1,7 +1,7 @@
 const axios  = require('axios');
 const { Country, Activity, conn } = require('../db.js');
 const { Op, QueryTypes } = require('sequelize');
-const countryFields = ['id', 'name', 'continent', 'image'];
+const countryFields = ['id', 'name', 'continent', 'image', 'population'];
 
 const  setAllCountriesToDB = async() => {
     const response = await axios.get('https://restcountries.com/v3/all');

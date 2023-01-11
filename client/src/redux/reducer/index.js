@@ -1,6 +1,6 @@
 import { GET_ALL_COUNTRIES, FILTER_COUNTRIES, ERROR_SERVER, GET_COUNTRY_DETAIL, 
     CREATE_ACTIVITY, GET_ALL_ACTIVITIES, CLEAR_STATES, GET_ALL_CONTINENTS,
-    ERROR_FILTER } from "../actions";
+    ERROR_FILTER, ORDER_BY_NAME, ORDER_BY_POPULATION } from "../actions";
 
 const initialState = {
     countries: [],
@@ -57,10 +57,40 @@ const rootReducer = (state = initialState, action) => {
         case CLEAR_STATES :
             return {
                 ...state,
-                activities : [],
-                countries: [],
+                //activities : [],
+                //countries: [],
                 counntry: {}
             }   
+
+        case ORDER_BY_NAME :
+            let sortedCountriesByName = state.countries.sort(
+                function(c1, c2) {
+                    const numberOrder = action.payload === 'asc' ? 1 : -1;
+                    if (c1.name.toUpperCase() > c2.name.toUpperCase()) return numberOrder;
+                    if (c1.name.toUpperCase() < c2.name.toUpperCase()) return (-1 * numberOrder);
+                    return 0;
+                } 
+            );
+
+            return {
+                ...state,
+                countries: sortedCountriesByName
+            }
+
+        case ORDER_BY_POPULATION :
+            let sortedCountriesByPopulation = state.countries.sort(
+                function(c1, c2) {
+                    if (action.payload === 'asc')
+                       return c1.population - c2.population
+                    else
+                       return c2.population - c1.population;   
+                } 
+            );
+            
+            return {
+                ...state,
+                countries: sortedCountriesByPopulation
+            }
 
         case ERROR_SERVER :
             return {

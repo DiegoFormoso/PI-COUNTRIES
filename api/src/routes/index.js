@@ -9,7 +9,7 @@ const router = Router();
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
-var instancia = 1; /// acordate de cambiarlo
+var instancia = 0; /// acordate de cambiarlo
 router.get('/countries', async(req, res) => {
     const {name, continent, activity} = req.query;
 

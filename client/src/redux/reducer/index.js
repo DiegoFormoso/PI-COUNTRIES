@@ -37,7 +37,7 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 continents: action.payload,
-                erros: {}
+                error: {}
             }
 
         case CREATE_ACTIVITY : 
@@ -51,7 +51,7 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 activities: action.payload,
-                error: []
+                error: {}
             }
 
         case CLEAR_STATES :

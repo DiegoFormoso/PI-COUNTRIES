@@ -3,6 +3,7 @@ import React, {useState, useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createActivity } from '../../redux/actions';
 import { useHistory } from 'react-router-dom';
+import { WindowModal } from '../WindowModal/WindowModal';
 import axios from 'axios';
 
 function validate(input) {
@@ -140,6 +141,10 @@ export const CreateActivity = () => {
         history.push('/');
     } 
   
+    const handleSuccessClose = () => {
+        setSuccess(false);
+    }
+
     return (
         <div className="container">
             <div className="form">
@@ -252,11 +257,10 @@ export const CreateActivity = () => {
                     </div>  
                 }
 
-                {success &&
-                    <div className='success'>
-                        <p> Activity created successfully </p>
-                    </div>  
-                }
+                <WindowModal isOpen={success} closeModal={handleSuccessClose}>
+                    Activity created successfully
+                </WindowModal>
+
             </div>
         </div>
     )

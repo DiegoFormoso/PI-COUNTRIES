@@ -63,13 +63,14 @@ export const getAllContinents = () => {
 };
 
 export const createActivity = (activity) => {
-    return async function(dispatch) {
-       await axios.post('http://localhost:3001/activities', activity)
-        .then(data => {dispatch({type: CREATE_ACTIVITY, payload: data.data})})
-        .catch(e => {
-            dispatch({type: ERROR_SERVER, payload:e.response.data})
-        })
-    } 
+    return ({type: CREATE_ACTIVITY,  payload: activity});
+    // return async function(dispatch) {
+    //    return await axios.post('http://localhost:3001/activities', activity)
+    //     .then(data => {dispatch({type: CREATE_ACTIVITY, payload: data.data})})
+    //     .catch(e => {
+    //         dispatch({type: ERROR_SERVER, payload:e.response.data})
+    //     })
+    // } 
 };
 
 export const getAllActivities = () => {

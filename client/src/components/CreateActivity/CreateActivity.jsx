@@ -3,7 +3,7 @@ import React, {useState, useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createActivity } from '../../redux/actions';
 import { useHistory } from 'react-router-dom';
-//import { SubmissionError } from 'redux-form';
+import axios from 'axios';
 
 function validate(input) {
     let errors = {};
@@ -31,18 +31,27 @@ function validate(input) {
     return errors;
 }
 
+const promiseHandleSubmit = (data) => {
+    return new Promise((resolve, reject) => {
+        axios.post('http://localhost:3001/activities', data)
+        .then(data => resolve(data))
+        .catch(e => reject(e))
+    }); 
+}
+
 export const CreateActivity = () => {
     const seasons = ['Summer', 'Autumn',  'Winter', 'Spring'];
     const difficulties = ['Very easy', 'Easy', 'Normal', 'Hard', 'Very hard'];
 
     const dispatch = useDispatch();
-    const serverError = useSelector(state => state.error);
     const countries = useSelector(state => state.countries);
     const refCountrySelect = useRef(null);
     const[errors, setErrors] = useState({});
+    const[success, setSuccess] = useState(false);
     const history = useHistory();
 
-    countries.sort((c1, c2) => {
+    // ordeno los paises para el combo de seleccion de paises, para que sea mas facil buscar
+    const countriesOrdered = countries.sort((c1, c2) => {
         const name1 = c1.name.toUpperCase(); // ignore upper and lowercase
         const name2 = c2.name.toUpperCase(); // ignore upper and lowercase
         if (name1 < name2) return -1;
@@ -84,7 +93,7 @@ export const CreateActivity = () => {
                 countries: `Country ${countryFind.name} already exists`
             })
         } else { // si no lo encuentra busco los datos en el estado de paises        
-            countryFind = countries.find(country => country.id === refCountrySelect.current.value);
+            countryFind = countriesOrdered.find(country => country.id === refCountrySelect.current.value);
             setInput({
                     ...input,
                     countries: [...input.countries, {id: countryFind.id, name: countryFind.name}]
@@ -99,31 +108,31 @@ export const CreateActivity = () => {
             countries: input.countries.filter(country => country.id !== e.target.id)
         })
     }
-
+    
     const handleOnSubmit = async(e) => {
         e.preventDefault();
 
-        //Video 48 de  curso react - validaciones
-        // setErrors(validate(input));
-        // console.log(validate(input));
-        // console.log(errors);
+        // espero a que la promesa del request devuelva un resultado
+        // para saber si el registro fue creado con exito o no.
+        // esto es para poder tratar errores back, que no son los mismos
+        // que los del front
 
-        // if (Object.keys(errors).length === 0 ) {
-
-        dispatch(createActivity(input));
-        if (serverError) {
-            alert('error');
-        }else{
-            alert(`${input.name} created successfully`);
-            console.log('paso 3');
+        await promiseHandleSubmit(input)
+        .then(activity => {
+            dispatch(createActivity(activity.data))
+            setSuccess(true);
+            setTimeout(() => setSuccess(false), 3000); 
             setInput({
                 name: "",
                 difficulty: 1,
                 duration: "",
                 season: seasons[0],
                 countries: []
-            }); 
-        }
+            });        
+        })
+        .catch(e => {
+            setErrors({serverError: e.response.data.error})
+        });
     }
 
     const handleOnClickReturnHome = (e) => {
@@ -197,7 +206,7 @@ export const CreateActivity = () => {
                             <select
                                 name="countrySelect"
                                 ref={refCountrySelect}>
-                                {countries && countries.map(country => {
+                                {countriesOrdered && countriesOrdered.map(country => {
                                     return ( 
                                     <option value={country.id} key={country.id}>
                                         {country.name}
@@ -229,13 +238,24 @@ export const CreateActivity = () => {
                         )}
                     </div>
                         
-                    <button type="submit">Create activity</button>
+                    <div>    
+                        <input 
+                            type="submit"
+                            value="Create activity"
+                            disabled={Object.keys(errors).length > 0 || !input.name || !input.duration || input.countries.length === 0}/>
+                    </div>
                 </form>
 
-                {serverError.hasOwnProperty('error') &&
-                <div className='error'>
-                    <p> {serverError.error} </p>
-                </div>  
+                {errors.serverError &&
+                    <div className='error'>
+                        <p> {errors.serverError} </p>
+                    </div>  
+                }
+
+                {success &&
+                    <div className='success'>
+                        <p> Activity created successfully </p>
+                    </div>  
                 }
             </div>
         </div>

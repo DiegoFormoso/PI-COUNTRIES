@@ -1,22 +1,25 @@
-import "./countryCard.css";
+import styles from "./countryCard.module.css";
 import React from "react";
 import { Link } from "react-router-dom";
 
 const CountryCard = (props) => {
-  const {id, name, image, continent } = props;
-//  const dispatch = useDispatch();
-
-  //  const handleOnClick = e => {
-  //    e.preventDefault();
-  //    dispatch(actions.deleteCharacter(id));
-  //  };
+  const {id, name, image, continent, population } = props;
+  const numberFormat = new Intl.NumberFormat("es-ES");
 
   return (
-    <div className="card">
-      <img src={image} alt={name}/>
-      <Link to={`/countries/${id}`}><p className="cardCountryName">{name}</p></Link>
-      <p className="cardCountryRegion">{continent}</p> 
-    </div>
+      <div className={styles.card}>
+        <Link to={`/home/countries/${id}`}>
+          <div>
+            <div className={styles.flagimage}>          
+              <img src={image} alt={name}/>
+            </div>
+
+            <p className={styles.cardCountryName}>{name}</p>
+            <p className={styles.cardCountryContinent}>{continent}</p>
+            <p className={styles.cardCountryPopulation}>{`${numberFormat.format(population)} people`}</p>
+            </div>
+          </Link>
+      </div>
   );
 };
 

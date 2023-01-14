@@ -1,9 +1,10 @@
-import "./home.css";
+import styles from "./home.module.css";
 import { React, useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {getCountries, countriesOrderByName, countriesOrderByPopulation, clearStates, getAllContinents} from "../../redux/actions";
+import {getCountries, countriesOrderByName, countriesOrderByPopulation} from "../../redux/actions";
 import CountryCard from "../CountryCard/CountryCard";
 import { Paginated } from "../Paginated/Paginated";
+import { SearchBar } from "../SearchBar/SearchBar";
 
 export const Home = () => {      
     const dispatch = useDispatch();
@@ -21,54 +22,24 @@ export const Home = () => {
     const paginated = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
-
-    const handleOrderByNameOnChange = e => {
-      e.preventDefault();
-      dispatch(countriesOrderByName(e.target.value));
+  
+    const handleCallbackOrderBy = value => {
       setCurrentPage(1);
       // es un estado local, que lo uso solo para que renderize si o si, si estoy en la pagina 1
-      setOrder('name_' + e.target.value);
+      setOrder(value);
     }
-  
-    const handleOrderByPopulationOnChange = e => {
-      e.preventDefault();
-      dispatch(countriesOrderByPopulation(e.target.value));
-      setCurrentPage(1);
-      // es un estado local, que lo uso solo para que renderize si o si, si estoy en la pagina 1
-      setOrder('population_' + e.target.value);
-    }
-  
+      
     useEffect(()=>{
         dispatch(getCountries());
-        return ()=>{
-          dispatch(clearStates())
-        }
      },[dispatch]);
       
     return (
       <div>
-        <div>
-          <select
-            name="orderByName"
-            placeholder='Order by name'
-            onChange={handleOrderByNameOnChange}
-            >
-            <option value="asc">A-Z</option>
-            <option value="desc">Z-A</option>
-          </select>
+        <SearchBar
+          cbOrderBy={handleCallbackOrderBy}
+        />
 
-          <select
-            name="orderByPopulation"
-            placeholder='Order by population'
-            onChange={handleOrderByPopulationOnChange}
-            >
-            <option value="asc">0-9</option>
-            <option value="desc">9-0</option>
-          </select>
-        </div>
-
-
-        <div className="countriesHome">
+        <div className={styles.countriesHome}>
           {currentCountries && currentCountries.map(country => {
                   return (
                       <CountryCard
@@ -77,6 +48,7 @@ export const Home = () => {
                           image={country.image}
                           name={country.name}
                           continent={country.continent} 
+                          population={country.population}
                       />
                   )
           })}
@@ -96,6 +68,7 @@ export const Home = () => {
               cbPaginated = { paginated }
           /> 
         </div>
+        
       </div>
     );
 }

@@ -1,5 +1,5 @@
-import './paginated.css';
 import React from 'react';
+import styles from "./paginated.module.css";
 
 export const Paginated = (data) => {
     const {countriesFirstPage, countriesPerPage, totalCountries, cbPaginated} = data;
@@ -17,11 +17,11 @@ export const Paginated = (data) => {
     
     return(
         <nav>
-            <ul className="footer">
+            <ul className={styles.navbarbuttons}>
                 { pageNumbers && pageNumbers.map(pageNumber => (
                     <li className='number' key={pageNumber}>      
                         <button 
-                            className="paginationButton"
+                            className={styles.paginationButton}
                             id={pageNumber} 
                             onClick={handleOnClickPage}>
                         {pageNumber}

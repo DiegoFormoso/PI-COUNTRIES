@@ -1,0 +1,41 @@
+.navbarbuttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    gap: 5px;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 5px;
+    margin-left: 2px;
+    margin-right: 2px;
+    color: rgb(1, 1, 77);
+    list-style: none; 
+    /* background-color: rgb(208, 233, 212); */
+    background-color: whitesmoke;
+    border-radius: 7px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(62, 126, 73);
+    padding-left: 10px;
+    padding-right: 10px;
+    min-height:50px;
+    box-shadow: 0px 2px 5px rgb(62, 126, 73);
+}
+
+.paginationButton {
+    border: 1px solid white;
+    box-shadow: 0px 0px 3px #aaa;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 300;
+    background:rgb(202, 216, 176);
+    margin: 0px 4px;
+    padding: 4px 16px;
+    width: auto;
+    cursor: pointer;
+    max-width: 40px;
+}
+
+.paginationButton:hover {
+    box-shadow: 2px 4px 6px #bbb;
+    background: rgb(223, 230, 211);
+}

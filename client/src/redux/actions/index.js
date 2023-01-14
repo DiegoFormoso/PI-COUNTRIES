@@ -1,23 +1,15 @@
 import axios from 'axios';
 
-export const GET_ALL_COUNTRIES = 'GET_ALL_COUNTRIES';
-export const GET_COUNTRY_DETAIL = 'GET_COUNTRY_DETAIL';
-export const FILTER_COUNTRIES = 'FILTER_COUNTRIES';
-export const CREATE_ACTIVITY = 'CREATE_ACTIVITY';
-export const GET_ALL_ACTIVITIES = 'GET_ALL_ACTIVITIES';
-export const CLEAR_STATES = 'CLEAR_STATES';
-export const GET_ALL_CONTINENTS = 'GET_ALL_CONTINENTS';
-export const ERROR_SERVER = 'ERROR_SERVER';
-export const ERROR_FILTER = 'ERROR_FILTER';
-export const ORDER_BY_NAME = 'ORDER_BY_NAME';
-export const ORDER_BY_POPULATION = 'ORDER_BY_POPULATION';
+import { GET_ALL_COUNTRIES, FILTER_COUNTRIES, SERVER_ERROR, GET_COUNTRY_DETAIL, 
+    CREATE_ACTIVITY, GET_ALL_ACTIVITIES, GET_ALL_CONTINENTS, FILTER_ERROR, 
+    ORDER_BY_NAME, ORDER_BY_POPULATION } from "./constants";
 
 export const getCountries = () =>  {
     return function(dispatch) {
         return fetch("http://localhost:3001/countries")
         .then (response => response.json())
         .then (data => dispatch({type: GET_ALL_COUNTRIES, payload:data}))
-        .catch(err => console.log(err))
+        .catch(e => dispatch({type: SERVER_ERROR, payload: e.message}))
     }
 };
 
@@ -26,7 +18,7 @@ export const getCountryDetail = (id) => {
         return fetch(`http://localhost:3001/countries/${id}`)
         .then (response => response.json())
         .then (data => dispatch({type: GET_COUNTRY_DETAIL, payload:data}))
-        .catch(err => console.log(err))
+        .catch(e => dispatch({type: SERVER_ERROR, payload: e.message}))
     }
 };
 
@@ -40,12 +32,12 @@ export const filterCountries = (name, continent, activity) => {
         .then (data => 
             {
                if (data.hasOwnProperty('error'))  
-                  dispatch({type: ERROR_FILTER, payload:data});
+                  dispatch({type: FILTER_ERROR, payload:data});
                else    
                   dispatch({type: FILTER_COUNTRIES, payload:data});
             })
-        .catch(err => {
-            console.log(err);
+        .catch(e => {
+            dispatch({type: SERVER_ERROR, payload: e.message});
         })
     }
 };
@@ -57,20 +49,13 @@ export const getAllContinents = () => {
                 dispatch({type: GET_ALL_CONTINENTS, payload: response.data})
             })
             .catch(e => {
-                dispatch({type: ERROR_SERVER, payload: e.message})
+                dispatch({type: SERVER_ERROR, payload: e.message})
             })
     }
 };
 
 export const createActivity = (activity) => {
     return ({type: CREATE_ACTIVITY,  payload: activity});
-    // return async function(dispatch) {
-    //    return await axios.post('http://localhost:3001/activities', activity)
-    //     .then(data => {dispatch({type: CREATE_ACTIVITY, payload: data.data})})
-    //     .catch(e => {
-    //         dispatch({type: ERROR_SERVER, payload:e.response.data})
-    //     })
-    // } 
 };
 
 export const getAllActivities = () => {
@@ -80,13 +65,9 @@ export const getAllActivities = () => {
                 dispatch({type: GET_ALL_ACTIVITIES, payload: response.data})
             })
             .catch(e => {
-                dispatch({type: ERROR_SERVER, payload: e.message})
+                dispatch({type: SERVER_ERROR, payload: e.message})
             })
     }
-}
-
-export const clearStates =() => {
-    return ({type: CLEAR_STATES, payload: []});
 }
 
 export const countriesOrderByName = (typeOrder) => {

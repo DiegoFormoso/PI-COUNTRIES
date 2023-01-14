@@ -5,6 +5,7 @@ import { createActivity } from '../../redux/actions';
 import { useHistory } from 'react-router-dom';
 import { WindowModal } from '../WindowModal/WindowModal';
 import axios from 'axios';
+import {DIFFICULTIES} from '../../redux/actions/constants';
 
 function validate(input) {
     let errors = {};
@@ -42,7 +43,6 @@ const promiseHandleSubmit = (data) => {
 
 export const CreateActivity = () => {
     const seasons = ['Summer', 'Autumn',  'Winter', 'Spring'];
-    const difficulties = ['Very easy', 'Easy', 'Normal', 'Hard', 'Very hard'];
 
     const dispatch = useDispatch();
     const countries = useSelector(state => state.countries);
@@ -138,7 +138,7 @@ export const CreateActivity = () => {
 
     const handleOnClickReturnHome = (e) => {
         e.preventDefault();
-        history.push('/');
+        history.push('/home');
     } 
   
     const handleSuccessClose = () => {
@@ -173,7 +173,7 @@ export const CreateActivity = () => {
                             name="difficulty"
                             value={input.difficulty}
                             onChange={handleOnChange}>
-                            {difficulties && difficulties.map((difficulty, ind) => {
+                            {DIFFICULTIES && DIFFICULTIES.map((difficulty, ind) => {
                                 return <option value={ind+1} key={difficulty}>{difficulty}</option>
                             })}
                         </select>        

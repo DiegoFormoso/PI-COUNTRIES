@@ -1,0 +1,84 @@
+.search{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 7px;    
+    background-color:  rgb(4, 116, 138);
+    margin-left: 2px;
+    margin-right: 2px;
+    font-size: 16px;
+}
+
+.divborderleft, .divborderright{
+    width: 25%;
+}
+
+.divborderleft {
+    text-align: left;
+}
+
+.divborderright {
+    text-align: right;
+}
+
+.divcenter{
+    width: 50%;
+}
+
+.searchName, .selectOrderBy, .selectContinents, .searchButton, .selectActivity{
+	box-sizing: border-box;
+	border: 1px solid rgb(157, 184, 190);
+	box-shadow: 0px 1px 4px rgb(216, 225, 226);
+	padding: 4px;
+    width: 250px; 
+    font-size: 14px;
+    /* outline lo que es que cuando te pones arriba con el foco no pinta de negro el borde */
+    outline: none;
+}
+
+.searchName:focus{
+    border-color: rgb(48, 179, 9);
+}
+
+.searchName {
+    height: 30px;
+    width: 250px; 
+    border-radius: 0px;
+}
+
+.selectOrderBy{
+	border-radius: 5px;
+    width: 120px;
+}
+
+.selectContinents{
+    width: 150px;
+    border-radius: 0px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-color: rgb(210, 210, 218);
+    height: 30px;
+}
+
+.selectContinents option{
+    background-color: white;
+}
+
+.searchButton{
+    width: 60px;
+    height: 30px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: rgb(202, 216, 176);
+    cursor: pointer;
+}
+
+.searchButton:hover{
+    background-color: rgb(223, 230, 211);
+}
+
+.selectActivity{
+    width: 200px;
+	border-radius: 5px;
+}

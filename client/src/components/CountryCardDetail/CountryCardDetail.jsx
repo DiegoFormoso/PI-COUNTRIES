@@ -1,8 +1,9 @@
-import "./countryCardDetail.css";
+import styles from "./countryCardDetail.module.css";
 import {React, useEffect}  from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getCountryDetail } from "../../redux/actions";
 import { Link } from "react-router-dom";
+import ActivityCard from "../ActivityCard/ActivityCard";
 
 const CountryCardDetail = (props) =>  {
     const countryDetail = useSelector(state => state.country);
@@ -15,35 +16,59 @@ const CountryCardDetail = (props) =>  {
     );
 
     return( 
-        <div>
-            <Link to="/"><p>Return Home</p></Link>
-            <img src={countryDetail.image} alt={countryDetail.name} width="300px" height="200px"/>
-            <h1>Name: {countryDetail.name}</h1>
-            <h3>Capital: {countryDetail.capital}</h3>
-            <h4>Continent: {countryDetail.continent}</h4>
-            <h4>Subregion: {countryDetail.subregion}</h4>
-            <h4>Population: {countryDetail.population}</h4>
-            <h4>Area: {countryDetail.area}</h4>
-            <div>
-                <h4>Tourist activities</h4>
-                {countryDetail.activities && countryDetail.activities.length > 0 ? countryDetail.activities.map(activity => {
-                    return(
-                        <ul id={activity.id}>
-                            <li>
-                                Name: {activity.name}
-                            </li>
-                            <li>
-                                Difficulty: {activity.difficult}
-                            </li>
-                            <li>
-                                Duraction: {activity.duraction}
-                            </li>
-                            <li>
-                                Season: {activity.season}
-                            </li>
-                        </ul>
-                    )
-                }) : <p>Country without tourist activities</p>}
+        <div className={styles.container}>
+            <div className={styles.detailCard}>
+                {/* <Link to="/home"><p>Return Home</p></Link> */}
+                <div className={styles.flagContainer}>
+                    <div className={styles.countryName}>
+                        <h2>{countryDetail.name}</h2>
+                    </div>
+                    <div class={styles.flagImage}>
+                        <img src={countryDetail.image} alt={countryDetail.name} width="300px" height="200px"/>
+                    </div>
+                </div>
+
+                <div className={styles.separator}></div>
+
+                <div className={styles.detailContainer}>
+                    <div className={styles.detailContainerLeft}>
+                        <div className={styles.detailSubContainerTitle}>
+                            <p>Capital</p>
+                            <p>Continent</p>
+                        </div>
+                        <div className={styles.detailSubContainerData}>
+                            <p>{countryDetail.capital}</p>
+                            <p>{countryDetail.continent} - {countryDetail.subregion}</p>
+                        </div>                        
+                    </div>
+
+                    <div className={styles.detailContainerRight}>
+                        <div className={styles.detailSubContainerTitle}>
+                            <p>Population</p>
+                            <p>Area</p>
+                        </div>
+                        <div className={styles.detailSubContainerData}>
+                            <p>{countryDetail.population}</p>
+                            <p>{countryDetail.area}</p>
+                        </div>                        
+                    </div>
+                </div>
+
+                <div className={styles.separator}>
+                    <h5>Tourist activities</h5>
+                </div>
+
+                <div className={styles.detailActivities}>
+                    {countryDetail.activities && countryDetail.activities.length > 0 ? countryDetail.activities.map(activity => {
+                        return (<ActivityCard
+                            id = {activity.id}
+                            name = {activity.name}
+                            season ={activity.season}
+                            difficulty = {activity.difficulty}
+                            duration = {activity.duration}
+                        />)
+                    }) : <h6>Country without tourist activities</h6>}
+                </div>
             </div>
         </div>
     )

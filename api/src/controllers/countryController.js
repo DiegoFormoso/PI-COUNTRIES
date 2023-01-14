@@ -8,7 +8,7 @@ const  setAllCountriesToDB = async() => {
     let countries = response.data.map((country) => ({
         id: country.cca3,
         name: country.name.common !== null ? country.name.common : 'without Name',
-        image: country.flags !== null ? country.flags[0] : 'without Flag',
+        image: country.flags !== null ? country.length > 1 ? country.flags[1] : country.flags[0] : 'without Flag',
         continent: country.continents !== null ? country.continents[0] : 'without Continent',
         subregion: country.subregion,
         capital: country.hasOwnProperty('capital') ? country.capital[0] : 'without Capital',

@@ -1,6 +1,6 @@
-import { GET_ALL_COUNTRIES, FILTER_COUNTRIES, ERROR_SERVER, GET_COUNTRY_DETAIL, 
-    CREATE_ACTIVITY, GET_ALL_ACTIVITIES, CLEAR_STATES, GET_ALL_CONTINENTS,
-    ERROR_FILTER, ORDER_BY_NAME, ORDER_BY_POPULATION } from "../actions";
+import { GET_ALL_COUNTRIES, FILTER_COUNTRIES, SERVER_ERROR, GET_COUNTRY_DETAIL, 
+    CREATE_ACTIVITY, GET_ALL_ACTIVITIES, GET_ALL_CONTINENTS, FILTER_ERROR, 
+    ORDER_BY_NAME, ORDER_BY_POPULATION, ORDER_BY_NAME_ASC, ORDER_BY_POPULATION_ASC } from "../actions/constants";
 
 const initialState = {
     countries: [],
@@ -54,18 +54,10 @@ const rootReducer = (state = initialState, action) => {
                 error: {}
             }
 
-        case CLEAR_STATES :
-            return {
-                ...state,
-                //activities : [],
-                //countries: [],
-                counntry: {}
-            }   
-
         case ORDER_BY_NAME :
             let sortedCountriesByName = state.countries.sort(
                 function(c1, c2) {
-                    const numberOrder = action.payload === 'asc' ? 1 : -1;
+                    const numberOrder = action.payload === ORDER_BY_NAME_ASC ? 1 : -1;
                     if (c1.name.toUpperCase() > c2.name.toUpperCase()) return numberOrder;
                     if (c1.name.toUpperCase() < c2.name.toUpperCase()) return (-1 * numberOrder);
                     return 0;
@@ -80,7 +72,7 @@ const rootReducer = (state = initialState, action) => {
         case ORDER_BY_POPULATION :
             let sortedCountriesByPopulation = state.countries.sort(
                 function(c1, c2) {
-                    if (action.payload === 'asc')
+                    if (action.payload === ORDER_BY_POPULATION_ASC)
                        return c1.population - c2.population
                     else
                        return c2.population - c1.population;   
@@ -92,13 +84,13 @@ const rootReducer = (state = initialState, action) => {
                 countries: sortedCountriesByPopulation
             }
 
-        case ERROR_SERVER :
+        case SERVER_ERROR :
             return {
                 ...state,
                 error: action.payload
             }
 
-        case ERROR_FILTER :
+        case FILTER_ERROR :
             return {
                 ...state,
                 error: action.payload,

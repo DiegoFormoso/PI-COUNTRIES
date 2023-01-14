@@ -1,0 +1,27 @@
+.cardActivity{
+    width: 125px;
+    height: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 2px;
+    margin-right: 2px;
+    border-style: solid;
+    border-color: rgb(62, 126, 73);
+    border-width: 1.5px;
+    border-radius: 5px;
+    box-shadow: rgb(66, 124, 185) 0px 10px 15px -10px;
+    background-color: rgba(211, 238, 216, 0.377);
+}
+
+.cardActivity h5{
+    margin-top:0px;
+    min-height: 20px;
+    margin-bottom: 10px;
+    background-color:  rgb(206, 219, 221);
+}
+
+.cardActivity p{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 11px;
+    margin-left: 5px;
+}

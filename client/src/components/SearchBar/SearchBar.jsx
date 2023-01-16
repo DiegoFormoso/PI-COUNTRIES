@@ -5,7 +5,7 @@ import { filterCountries, getAllActivities, getAllContinents, countriesOrderByNa
 import {ORDER_BY_NAME_ASC, ORDER_BY_NAME_DESC, ORDER_BY_POPULATION_ASC, ORDER_BY_POPULATION_DESC} from "../../redux/actions/constants";
 
 export const SearchBar = (props) => {
-  const {cbOrderBy} = props;
+  const {cbChangeState} = props;
 
   const continents = useSelector(state => state.continents);
   const activities = useSelector(state => state.activities);
@@ -27,6 +27,7 @@ export const SearchBar = (props) => {
     e.preventDefault();
     dispatch(filterCountries(inputName.current.value, 
       inputContinent.current.value, inputActivity.current.value));
+    cbChangeState(e.target.value);
   };
 
   const handleOrderByOnChange = e => {
@@ -35,7 +36,15 @@ export const SearchBar = (props) => {
         dispatch(countriesOrderByName(e.target.value));
     else
        dispatch(countriesOrderByPopulation(e.target.value));
-    cbOrderBy(e.target.value);
+    cbChangeState(e.target.value);
+  }
+
+  const handleOnClearFilters = e => {
+    e.preventDefault();
+    inputName.current.value = "";
+    inputContinent.current.value = "";
+    inputActivity.current.value = "";
+    handleFilterOnChange(e);
   }
 
   return (
@@ -92,10 +101,9 @@ export const SearchBar = (props) => {
 
           <input
               type="button"
-              name="pepe"
-              value="Search"
-              placeholder="Search"
-              onChange={handleFilterOnChange}
+              name="buttonClear"
+              value="Clear"
+              onClick={handleOnClearFilters}
               className={styles.searchButton}
             />
     

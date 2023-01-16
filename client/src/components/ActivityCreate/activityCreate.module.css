@@ -1,0 +1,105 @@
+.form{
+    color: initial;
+    font-weight: initial;
+    display: initial;
+    align-items: initial;
+    justify-content: initial;
+    position: initial;
+
+    text-align: left;
+	max-width: 500px;
+	font: 13px Arial, Helvetica, sans-serif;
+}
+
+.formContainerHeading, .formContainerSubheading{
+	font-weight: bold;
+	font-style: italic;
+	border-bottom: 2px solid #ddd;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	font-size: 17px;
+	padding-bottom: 3px;
+}
+
+.formContainerSubheading{
+	font-size: 15px;
+}
+
+.form label{
+	display: block;
+	margin: 0px 0px 15px 0px;
+}
+
+.form label > span{
+	width: 100px;
+	font-weight: bold;    
+	float: left;
+	padding-top: 8px;
+	padding-right: 5px;
+}
+
+.form span.required{
+	color:red;
+}
+
+.form input.inputField, .form .selectField{
+	width: 70%;	
+}
+
+.form input.inputField, 
+.form .selectField{
+	box-sizing: border-box;
+	border: 1px solid #C2C2C2;
+	box-shadow: 1px 1px 4px #EBEBEB;
+	border-radius: 3px;
+	padding: 7px;
+}
+
+.form .inputField:focus, 
+.form .selectField:focus{
+	border: 1px solid #0C0;
+}
+
+.formDivButton {
+	border-top: 2px solid #ddd;    
+    margin-top: 15px;
+    text-align: center;
+}
+
+.formButton{
+	border-style: solid;
+    border-width: 1px;
+    border-color: rgb(3, 72, 87);
+	padding: 8px 15px 8px 15px;
+	background: rgb(206, 219, 221);
+	color: rgb(3, 72, 87);
+	box-shadow: 1px 1px 4px #DADADA;
+	border-radius: 2px;
+    margin-top: 10px;
+	cursor: pointer;
+}
+
+.formButton:hover{
+    background-color: rgb(172, 193, 197);
+}
+
+.formButton:disabled{
+	cursor:initial;
+	background-color: silver;
+	color: white;
+}
+
+.errors{
+    color: red;
+    font-size: 11px;
+	text-align: center;
+	margin-top: 10px;
+}
+
+.detailCountries{
+    display: flex;
+    justify-content: left;
+    flex-wrap: wrap;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

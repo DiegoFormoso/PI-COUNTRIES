@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { GET_ALL_COUNTRIES, FILTER_COUNTRIES, SERVER_ERROR, GET_COUNTRY_DETAIL, 
     CREATE_ACTIVITY, GET_ALL_ACTIVITIES, GET_ALL_CONTINENTS, FILTER_ERROR, 
-    ORDER_BY_NAME, ORDER_BY_POPULATION } from "./constants";
+    ORDER_BY_NAME, ORDER_BY_POPULATION, CLEAR_STATES } from "./constants";
 
 export const getCountries = () =>  {
     return function(dispatch) {
@@ -76,4 +76,8 @@ export const countriesOrderByName = (typeOrder) => {
 
 export const countriesOrderByPopulation = (typeOrder) => {
     return ({type: ORDER_BY_POPULATION,  payload: typeOrder});
+}
+
+export const clearStates = () => {
+    return ({type: CLEAR_STATES});
 }

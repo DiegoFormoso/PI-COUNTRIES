@@ -1,10 +1,11 @@
-import './createActivity.css';
+import styles from './activityCreate.module.css';
 import React, {useState, useRef} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { createActivity } from '../../redux/actions';
-import { useHistory } from 'react-router-dom';
-import { WindowModal } from '../WindowModal/WindowModal';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { createActivity } from '../../redux/actions';
+import { WindowModal } from '../WindowModal/WindowModal';
+import { CountryMiniCard } from '../CountryMiniCard/CountryMiniCard';
 import {DIFFICULTIES} from '../../redux/actions/constants';
 
 function validate(input) {
@@ -27,6 +28,7 @@ function validate(input) {
     if (!input.season)
         errors.season =  'SEASON is required';
 
+    console.log('long', input.countries.length);    
     if (!input.countries.length)   
         errors.countries =  'You must have ay least one COUNTRY';
 
@@ -41,7 +43,7 @@ const promiseHandleSubmit = (data) => {
     }); 
 }
 
-export const CreateActivity = () => {
+export const ActivityCreate = () => {
     const seasons = ['Summer', 'Autumn',  'Winter', 'Spring'];
 
     const dispatch = useDispatch();
@@ -49,6 +51,7 @@ export const CreateActivity = () => {
     const refCountrySelect = useRef(null);
     const[errors, setErrors] = useState({});
     const[success, setSuccess] = useState(false);
+    const[isOpen, setIsOpen] = useState(true);
     const history = useHistory();
 
     // ordeno los paises para el combo de seleccion de paises, para que sea mas facil buscar
@@ -83,7 +86,6 @@ export const CreateActivity = () => {
 
     const handleCountryAdd = (e) => {
         e.preventDefault();
-        setErrors({});
 
         // busco el pais en el detalle de la actividad
         let countryFind = input.countries.length &&
@@ -92,13 +94,25 @@ export const CreateActivity = () => {
             setErrors({
                 ...errors,
                 countries: `Country ${countryFind.name} already exists`
-            })
+            });
+
+            setTimeout(()=> {
+                setErrors(validate(input));
+            }, 2000);
+            
         } else { // si no lo encuentra busco los datos en el estado de paises        
             countryFind = countriesOrdered.find(country => country.id === refCountrySelect.current.value);
             setInput({
                     ...input,
-                    countries: [...input.countries, {id: countryFind.id, name: countryFind.name}]
+                    countries: [...input.countries, 
+                        {id: countryFind.id, name: countryFind.name, image: countryFind.image}]
                 });
+
+            // lo hago para que me borre en el momento los errores de paises
+            // y me active el boton de create activity    
+            const e = errors;
+            delete e.countries;  
+            setErrors(e);
         };
     }
 
@@ -117,12 +131,11 @@ export const CreateActivity = () => {
         // para saber si el registro fue creado con exito o no.
         // esto es para poder tratar errores back, que no son los mismos
         // que los del front
-
+        setErrors(validate(input));
         await promiseHandleSubmit(input)
         .then(activity => {
             dispatch(createActivity(activity.data))
             setSuccess(true);
-            setTimeout(() => setSuccess(false), 3000); 
             setInput({
                 name: "",
                 difficulty: 1,
@@ -135,82 +148,104 @@ export const CreateActivity = () => {
             setErrors({serverError: e.response.data.error})
         });
     }
-
-    const handleOnClickReturnHome = (e) => {
-        e.preventDefault();
-        history.push('/home');
-    } 
   
     const handleSuccessClose = () => {
         setSuccess(false);
     }
 
+    const handleActivityCreateClose = () => {
+        setIsOpen(false);
+        history.goBack();
+    }
+
     return (
-        <div className="container">
-            <div className="form">
-                <button onClick={handleOnClickReturnHome}>Return home</button>
-                <h1>Create tourist activity</h1>
-                <form onSubmit={handleOnSubmit} className="form-container">
-                    <div className='container-fields'>
-                        <label>Name</label>
-                        <input
-                            type="text"
-                            name="name"
+        <WindowModal isOpen={isOpen} closeModal={handleActivityCreateClose} buttonCloseUp={true}>
+            <div className={styles.form}>
+                <div className={styles.formContainerHeading}>
+                    Create tourist activity
+                </div>
+                <form onSubmit={handleOnSubmit} className={styles.formSub}>
+                    <label htmlFor="name">
+                        <span>Name 
+                            <span className={styles.required}>*</span>
+                        </span>
+
+                        <input 
+                            type="text" 
+                            className={styles.inputField} 
+                            name="name" 
                             value={input.name}
-                            placeholder="Name"                    
-                            onChange={handleOnChange}
-                            />
+                            placeholder="Type the name"
+                            onChange={handleOnChange} 
+                        />
 
                         {errors.name && (
-                           <p className='error'>{errors.name}</p> 
+                        <p className={styles.errors}>{errors.name}</p> 
                         )}
+                    </label>
 
-                    </div>
+                    <label htmlFor="difficulty">
+                        <span>Difficulty
+                            <span className={styles.required}>*</span>
+                        </span>
 
-                    <div className='container-fields'>
-                        <label>Difficulty</label>
-                        <select
-                            name="difficulty"
+                        <select 
+                            name="difficulty" 
+                            className={styles.selectField}
                             value={input.difficulty}
                             onChange={handleOnChange}>
                             {DIFFICULTIES && DIFFICULTIES.map((difficulty, ind) => {
-                                return <option value={ind+1} key={difficulty}>{difficulty}</option>
-                            })}
-                        </select>        
-                    </div>
+                                    return <option value={ind+1} key={difficulty}>{difficulty}</option>
+                                })}
+                        </select>
+                    </label>
 
-                    <div className='container-fields'>
-                        <label>Duration</label>
-                        <input
-                            type="text"
-                            name="duration"
+                    <label htmlFor="duration">
+                        <span>Duration
+                            <span className={styles.required}>*</span>
+                        </span>
+
+                        <input 
+                            type="text" 
+                            className={styles.inputField} 
+                            name="duration" 
                             value={input.duration}
                             onChange={handleOnChange}
                             placeholder="For example 3 hours, 2 days ..."
                             />
-                        {errors.duration && (
-                            <p className='error'>{errors.duration}</p>
-                        )}    
-                    </div>
 
-                    <div className='container-fields'>
-                        <label>Season</label>
-                        <select
-                            name="season"
+                        {errors.duration && (
+                            <p className={styles.errors}>{errors.duration}</p>
+                        )}    
+                    </label>
+
+
+                    <label htmlFor="season">
+                        <span>Season
+                            <span className={styles.required}>*</span>
+                        </span>
+
+                        <select 
+                            name="season" 
+                            className={styles.selectField}
                             value={input.season}
                             onChange={handleOnChange}>
                             {seasons && seasons.map(season => {
                                 return <option value={season} key={season}>{season}</option>
                             })}
                         </select>
-                    </div>
+                    </label>
 
                     <div>
                         <div>
-                            <h3>Countries</h3>
+                            <div className={styles.formContainerSubheading}>
+                                Countries
+                            </div>
+
                             <select
                                 name="countrySelect"
-                                ref={refCountrySelect}>
+                                ref={refCountrySelect}
+                                className={styles.selectField}>
                                 {countriesOrdered && countriesOrdered.map(country => {
                                     return ( 
                                     <option value={country.id} key={country.id}>
@@ -220,49 +255,54 @@ export const CreateActivity = () => {
                                 })}
                             </select>
 
-                            <button onClick={handleCountryAdd}>Add country</button>
+                            <button 
+                                className={styles.formButton}
+                                onClick={handleCountryAdd}>
+                                Add country
+                            </button>
                             
-                            {input.countries.length > 0 && input.countries.map(country =>{
-                                return (
-                                    <div key={country.id}>
-                                        <p>
-                                            {country.name} 
-                                            <button 
-                                                id={country.id} 
-                                                onClick={handleCountryDelete}>
-                                                Delete
-                                            </button>
-                                        </p> 
-                                    </div>
-                                )
-                            })}
+                            <div className={styles.detailCountries} >
+                                {input.countries.length > 0 && input.countries.map(country =>{
+                                    return (                                                                        
+                                            <CountryMiniCard            
+                                                key = {country.id}                                
+                                                id={country.id}
+                                                name = {country.name}
+                                                image = {country.image}
+                                                cbHandleDelete = {handleCountryDelete}
+                                            />
+                                    )
+                                })}
+                                        </div>
 
                         </div>
+
                         {errors.countries && (
-                            <p className='error'>{errors.countries}</p>
+                           <p className={styles.errors}>{errors.countries}</p>
                         )}
+
                     </div>
                         
-                    <div>    
+                    <div className={styles.formDivButton}>    
                         <input 
                             type="submit"
                             value="Create activity"
+                            className={styles.formButton}
                             disabled={Object.keys(errors).length > 0 || !input.name || !input.duration || input.countries.length === 0}/>
                     </div>
                 </form>
 
                 {errors.serverError &&
-                    <div className='error'>
+                    <div className={styles.errors}>
                         <p> {errors.serverError} </p>
                     </div>  
                 }
 
-                <WindowModal isOpen={success} closeModal={handleSuccessClose}>
-                    Activity created successfully
+                <WindowModal isOpen={success} closeModal={handleSuccessClose} buttonCloseUp={false}>
+                    <p>Activity created successfully !!!</p>
                 </WindowModal>
-
             </div>
-        </div>
+        </WindowModal>
     )
 };
 

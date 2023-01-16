@@ -1,7 +1,7 @@
 import styles from "./home.module.css";
 import { React, useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {getCountries, countriesOrderByName, countriesOrderByPopulation} from "../../redux/actions";
+import {getCountries} from "../../redux/actions";
 import CountryCard from "../CountryCard/CountryCard";
 import { Paginated } from "../Paginated/Paginated";
 import { SearchBar } from "../SearchBar/SearchBar";
@@ -23,10 +23,12 @@ export const Home = () => {
         setCurrentPage(pageNumber);
     };
   
-    const handleCallbackOrderBy = value => {
+    const handleCallbackChangeState = value => {
       setCurrentPage(1);
       // es un estado local, que lo uso solo para que renderize si o si, si estoy en la pagina 1
       setOrder(value);
+      // para que no me un warning el order
+      if (order) return;
     }
       
     useEffect(()=>{
@@ -36,7 +38,7 @@ export const Home = () => {
     return (
       <div>
         <SearchBar
-          cbOrderBy={handleCallbackOrderBy}
+          cbChangeState={handleCallbackChangeState}
         />
 
         <div className={styles.countriesHome}>

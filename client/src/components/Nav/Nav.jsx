@@ -16,7 +16,7 @@ export const Nav = () => {
 
         <div className={styles.btnbar}>
           <div className={styles.btn}>      
-            <Link to="/home">Home</Link>
+            <Link to="/">Main page</Link>
           </div>
 
           <div className={styles.btn}>

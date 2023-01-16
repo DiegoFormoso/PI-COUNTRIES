@@ -8,6 +8,7 @@ export const SERVER_ERROR = 'SERVER_ERROR'; // este acccion se usa para errores 
 export const FILTER_ERROR = 'FILTER_ERROR'; // este accion la uso para vaciar countries y que no se muestren 
 export const ORDER_BY_NAME = 'ORDER_BY_NAME';
 export const ORDER_BY_POPULATION = 'ORDER_BY_POPULATION';
+export const CLEAR_STATES = 'CLEAR_STATES';
 
 export const ORDER_BY_NAME_ASC        = 'ORDER_BY_NAME_ASC';
 export const ORDER_BY_NAME_DESC       = 'ORDER_BY_NAME_DESC';

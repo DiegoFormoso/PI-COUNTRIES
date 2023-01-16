@@ -3,18 +3,17 @@ import { Route } from 'react-router-dom';
 import { Home } from './components/Home/Home';
 import { Nav } from './components/Nav/Nav';
 import CountryCardDetail from './components/CountryCardDetail/CountryCardDetail';
-import { CreateActivity } from './components/CreateActivity/CreateActivity';
+import { ActivityCreate } from './components/ActivityCreate/ActivityCreate';
 import LandingPage from './components/LandingPage/LandingPage';
-import { SearchBar } from './components/SearchBar/SearchBar';
 
 function App() {
   return (
     <div className="App">
       <Route exact path = "/" component={LandingPage}/>
       <Route path = "/home"  component={Nav}/>
-      <Route exact path ="/home"  component={Home}/>      
+      <Route path ="/home"  component={Home}/>      
       <Route exact path ="/home/countries/:id"  component={CountryCardDetail}/>  
-      <Route exact path ="/home/activities/create" component={CreateActivity}/>
+      <Route exact path ="/home/activities/create" component={ActivityCreate}/>
     </div>
   );
 }

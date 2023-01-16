@@ -1,13 +1,45 @@
 import { GET_ALL_COUNTRIES, FILTER_COUNTRIES, SERVER_ERROR, GET_COUNTRY_DETAIL, 
-    CREATE_ACTIVITY, GET_ALL_ACTIVITIES, GET_ALL_CONTINENTS, FILTER_ERROR, 
-    ORDER_BY_NAME, ORDER_BY_POPULATION, ORDER_BY_NAME_ASC, ORDER_BY_POPULATION_ASC } from "../actions/constants";
+    CREATE_ACTIVITY, GET_ALL_ACTIVITIES, GET_ALL_CONTINENTS, FILTER_ERROR, CLEAR_STATES,
+    ORDER_BY_NAME, ORDER_BY_POPULATION, 
+    ORDER_BY_NAME_ASC, ORDER_BY_NAME_DESC, 
+    ORDER_BY_POPULATION_ASC} from "../actions/constants";
 
 const initialState = {
     countries: [],
     country: {},
     activities: [],
     continents: [],
-    error: {}
+    error: {},
+    orderBy: ORDER_BY_NAME_ASC
+};
+
+const handleCountriesOrderByName = (countries, orderBy) => {
+    return countries.sort(
+        function(c1, c2) {
+            const numberOrder = orderBy === ORDER_BY_NAME_ASC ? 1 : -1;
+            if (c1.name.toUpperCase() > c2.name.toUpperCase()) return numberOrder;
+            if (c1.name.toUpperCase() < c2.name.toUpperCase()) return (-1 * numberOrder);
+            return 0;
+        } 
+    );
+};
+
+const handleCountriesOrderByPopulation = (countries, orderBy) =>{
+    return countries.sort(
+        function(c1, c2) {
+            if (orderBy === ORDER_BY_POPULATION_ASC)
+                return c1.population - c2.population
+            else
+                return c2.population - c1.population;   
+        } 
+    );
+};
+
+const handleCountriesOrdered = (countries, orderBy) => {
+    if (orderBy === ORDER_BY_NAME_ASC || orderBy === ORDER_BY_NAME_DESC) 
+        return  handleCountriesOrderByName(countries, orderBy)
+    else    
+        return handleCountriesOrderByPopulation(countries, orderBy);    
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -15,7 +47,14 @@ const rootReducer = (state = initialState, action) => {
         case GET_ALL_COUNTRIES : 
             return {
                 ...state,
-                countries: action.payload,
+                countries: handleCountriesOrdered(action.payload, state.orderBy),
+                error: {}
+            }
+
+        case FILTER_COUNTRIES :
+            return {
+                ...state,
+                countries: handleCountriesOrdered(action.payload, state.orderBy),
                 error: {}
             }
 
@@ -23,13 +62,6 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 country: action.payload,
-                error: {}
-            }
-
-        case FILTER_COUNTRIES :
-            return {
-                ...state,
-                countries: action.payload,
                 error: {}
             }
 
@@ -55,33 +87,23 @@ const rootReducer = (state = initialState, action) => {
             }
 
         case ORDER_BY_NAME :
-            let sortedCountriesByName = state.countries.sort(
-                function(c1, c2) {
-                    const numberOrder = action.payload === ORDER_BY_NAME_ASC ? 1 : -1;
-                    if (c1.name.toUpperCase() > c2.name.toUpperCase()) return numberOrder;
-                    if (c1.name.toUpperCase() < c2.name.toUpperCase()) return (-1 * numberOrder);
-                    return 0;
-                } 
-            );
-
             return {
                 ...state,
-                countries: sortedCountriesByName
+                countries: handleCountriesOrderByName(state.countries, action.payload),
+                orderBy: action.payload
             }
 
-        case ORDER_BY_POPULATION :
-            let sortedCountriesByPopulation = state.countries.sort(
-                function(c1, c2) {
-                    if (action.payload === ORDER_BY_POPULATION_ASC)
-                       return c1.population - c2.population
-                    else
-                       return c2.population - c1.population;   
-                } 
-            );
-            
+        case ORDER_BY_POPULATION :           
             return {
                 ...state,
-                countries: sortedCountriesByPopulation
+                countries: handleCountriesOrderByPopulation(state.countries, action.payload),
+                orderBy: action.payload
+            }
+
+        case CLEAR_STATES :
+            return {
+                ...state,
+                country: {},
             }
 
         case SERVER_ERROR :

@@ -1,14 +1,27 @@
-import "./windowModal.css";
+import styles from "./windowModal.module.css";
 
-export const WindowModal = ({children, isOpen, closeModal}) => {
+export const WindowModal = ({children, isOpen, closeModal, buttonCloseUp}) => {
+
     return (
-        <div className = {`modal ${isOpen && "is-open"}`}>
-            <div className="modal-container">
+        //  <div className = {`modal ${isOpen && "is-open"}`}>
+        <div className = {(isOpen && styles.modalIsOpen) || (styles.modal)}>
+            <div className={styles.modalContainer}>
+                <div className={(buttonCloseUp && styles.btnDivVisible) || (styles.btnDivHidden)}>
+                    <button 
+                        className={styles.modalClose} 
+                        onClick={closeModal}>X
+                    </button>
+                </div>
+
                 <div>
                     {children}
                 </div>
-                <div>
-                    <button className="modal-close" onClick={closeModal}>OK</button>
+                
+                <div className={(!buttonCloseUp && styles.btnDivVisible) || (styles.btnDivHidden)}>
+                    <button 
+                        className={styles.modalOk} 
+                        onClick={closeModal}>OK                        
+                    </button>
                 </div>
             </div>
         </div>

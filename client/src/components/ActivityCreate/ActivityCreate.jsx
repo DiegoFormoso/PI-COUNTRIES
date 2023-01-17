@@ -131,7 +131,6 @@ export const ActivityCreate = () => {
         // para saber si el registro fue creado con exito o no.
         // esto es para poder tratar errores back, que no son los mismos
         // que los del front
-        setErrors(validate(input));
         await promiseHandleSubmit(input)
         .then(activity => {
             dispatch(createActivity(activity.data))
@@ -177,7 +176,8 @@ export const ActivityCreate = () => {
                             value={input.name}
                             placeholder="Type the name"
                             onChange={handleOnChange} 
-                        />
+                            maxLength="50"
+                            />
 
                         {errors.name && (
                         <p className={styles.errors}>{errors.name}</p> 
@@ -212,6 +212,7 @@ export const ActivityCreate = () => {
                             value={input.duration}
                             onChange={handleOnChange}
                             placeholder="For example 3 hours, 2 days ..."
+                            maxLength="50"
                             />
 
                         {errors.duration && (

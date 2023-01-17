@@ -7,7 +7,7 @@ const addActivity = async(data) => {
 
   const activityVal = await Activity.findOne({where: {name: name}});
   if (activityVal) 
-     throw new Error(`Name ${name} already exists`);
+     throw new Error(`Name ${name} already exists`);  
 
   // Valido campo dificultad, que tenga el valor permitido
   if (difficulty < 1 || difficulty > 5) 

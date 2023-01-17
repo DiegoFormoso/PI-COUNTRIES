@@ -9,12 +9,13 @@ import { SearchBar } from "../SearchBar/SearchBar";
 export const Home = () => {      
     const dispatch = useDispatch();
     const countries = useSelector(state => state.countries);
-    const errorMessage = useSelector(state => state.error);
- 
+    const errorMessage = useSelector(state => state.error)
     const [currentPage, setCurrentPage] = useState(1);
     const [order, setOrder] = useState('');
+
     const countriesPerPage = 10;
     const countriesPerFirstPage = 9;
+
     const indexOfLastCountry = parseInt(currentPage) === 1 ? countriesPerFirstPage : (currentPage * countriesPerPage) - 1;   
     const indexOfFirstCountry = parseInt(currentPage) === 1 ? 0 : indexOfLastCountry - countriesPerPage;    
     const currentCountries = countries.slice(indexOfFirstCountry, indexOfLastCountry);
@@ -56,7 +57,7 @@ export const Home = () => {
           })}
 
           {errorMessage.hasOwnProperty('error') && (
-            <div className="errorBox">
+            <div className={styles.errorBox}>
               <p> {errorMessage.error} </p>
             </div>  
           )}
@@ -68,6 +69,7 @@ export const Home = () => {
               countriesPerPage = { countriesPerPage }
               totalCountries = {countries.length}
               cbPaginated = { paginated }
+              actualPage = { currentPage }
           /> 
         </div>
         

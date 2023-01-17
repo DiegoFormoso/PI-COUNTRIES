@@ -1,5 +1,5 @@
 import { GET_ALL_COUNTRIES, FILTER_COUNTRIES, SERVER_ERROR, GET_COUNTRY_DETAIL, 
-    CREATE_ACTIVITY, GET_ALL_ACTIVITIES, GET_ALL_CONTINENTS, FILTER_ERROR, CLEAR_STATES,
+    CREATE_ACTIVITY, GET_ALL_ACTIVITIES, FILTER_ERROR, CLEAR_STATES,
     ORDER_BY_NAME, ORDER_BY_POPULATION, 
     ORDER_BY_NAME_ASC, ORDER_BY_NAME_DESC, 
     ORDER_BY_POPULATION_ASC} from "../actions/constants";
@@ -8,7 +8,6 @@ const initialState = {
     countries: [],
     country: {},
     activities: [],
-    continents: [],
     error: {},
     orderBy: ORDER_BY_NAME_ASC
 };
@@ -62,13 +61,6 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 country: action.payload,
-                error: {}
-            }
-
-        case GET_ALL_CONTINENTS :
-            return {
-                ...state,
-                continents: action.payload,
                 error: {}
             }
 

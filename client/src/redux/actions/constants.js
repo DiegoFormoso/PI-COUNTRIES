@@ -3,7 +3,6 @@ export const GET_COUNTRY_DETAIL = 'GET_COUNTRY_DETAIL';
 export const FILTER_COUNTRIES = 'FILTER_COUNTRIES';
 export const CREATE_ACTIVITY = 'CREATE_ACTIVITY';
 export const GET_ALL_ACTIVITIES = 'GET_ALL_ACTIVITIES';
-export const GET_ALL_CONTINENTS = 'GET_ALL_CONTINENTS';
 export const SERVER_ERROR = 'SERVER_ERROR'; // este acccion se usa para errores de servidor 
 export const FILTER_ERROR = 'FILTER_ERROR'; // este accion la uso para vaciar countries y que no se muestren 
 export const ORDER_BY_NAME = 'ORDER_BY_NAME';

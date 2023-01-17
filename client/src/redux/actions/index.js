@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { GET_ALL_COUNTRIES, FILTER_COUNTRIES, SERVER_ERROR, GET_COUNTRY_DETAIL, 
-    CREATE_ACTIVITY, GET_ALL_ACTIVITIES, GET_ALL_CONTINENTS, FILTER_ERROR, 
+    CREATE_ACTIVITY, GET_ALL_ACTIVITIES,  FILTER_ERROR, 
     ORDER_BY_NAME, ORDER_BY_POPULATION, CLEAR_STATES } from "./constants";
 
 export const getCountries = () =>  {
@@ -39,18 +39,6 @@ export const filterCountries = (name, continent, activity) => {
         .catch(e => {
             dispatch({type: SERVER_ERROR, payload: e.message});
         })
-    }
-};
-
-export const getAllContinents = () => {
-    return function(dispatch) {
-        axios.get('http://localhost:3001/continents')
-            .then(response => {
-                dispatch({type: GET_ALL_CONTINENTS, payload: response.data})
-            })
-            .catch(e => {
-                dispatch({type: SERVER_ERROR, payload: e.message})
-            })
     }
 };
 

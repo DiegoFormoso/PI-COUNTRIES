@@ -48,19 +48,6 @@ const getCountriesFiltered = async(name, continent, activity) => {
     } 
 
     return await Country.findAll(condition);
-    // return await Country.findAll({
-    //     attributes: countryFields,
-    //     include: [{
-    //         model: Activity,
-    //         attributes:[],
-    //         where: {
-    //           id: `${activity}`
-    //         }             
-    //     }],
-    //     where : {
-    //         continent:`${continent}` 
-    //     }
-    // });
 }
 
 const getCountryById = async(id) => {

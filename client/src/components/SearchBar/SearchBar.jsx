@@ -1,15 +1,14 @@
 import styles from "./searchBar.module.css";
-import { React, useRef, useEffect } from "react";
+import axios from "axios";
+import { React, useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { filterCountries, getAllActivities, getAllContinents, countriesOrderByName, countriesOrderByPopulation} from "../../redux/actions";
+import { filterCountries, getAllActivities, countriesOrderByName, countriesOrderByPopulation} from "../../redux/actions";
 import {ORDER_BY_NAME_ASC, ORDER_BY_NAME_DESC, ORDER_BY_POPULATION_ASC, ORDER_BY_POPULATION_DESC} from "../../redux/actions/constants";
 
 export const SearchBar = (props) => {
   const {cbChangeState} = props;
-
-  const continents = useSelector(state => state.continents);
   const activities = useSelector(state => state.activities);
-
+  const [continents, setContinents] = useState([]); 
   const inputName = useRef(null);
   const inputContinent = useRef(null);
   const inputActivity = useRef(null);
@@ -20,8 +19,10 @@ export const SearchBar = (props) => {
    },[dispatch]);
 
    useEffect(()=> {
-     dispatch(getAllContinents());
-   },[dispatch]);
+      axios.get('http://localhost:3001/continents')
+        .then(response => setContinents(response.data))
+        .catch(e => alert(e.message));
+   }, []);
 
   const handleFilterOnChange = e => {
     e.preventDefault();
@@ -97,6 +98,7 @@ export const SearchBar = (props) => {
               onChange={handleFilterOnChange}
               ref={inputName}
               className={styles.searchName}
+              maxLength="20"
             />
 
           <input
